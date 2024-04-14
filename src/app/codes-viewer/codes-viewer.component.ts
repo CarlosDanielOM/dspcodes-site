@@ -62,6 +62,16 @@ export class CodesViewerComponent {
   }
   
   deleteCode(code: any) {
+    let action = confirm('Are you sure you want to delete this?');
+    if(!action) return;
+    if(this.lockers) {
+      this.codesService.deleteLockerCode(code._id).subscribe();
+    }
+    if(this.access) {
+      this.codesService.deleteAccessCode(code._id).subscribe();
+      
+    }
+    this.codes = this.codes.filter(c => c._id !== code._id);
   }
   
 }
