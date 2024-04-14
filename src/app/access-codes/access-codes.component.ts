@@ -25,4 +25,18 @@ export class AccessCodesComponent {
     });
   }
   
+  deletedCode(code: any) {
+    this.codesService.deleteAccessCode(code._id).subscribe(deleted => {
+      this.codes = this.codes.filter(code => code._id !== deleted._id)
+    })
+  }
+
+  modifiedCode(code: any) {
+    let id = code._id;
+    delete code._id;
+    this.codesService.updateAccessCode(code, id).subscribe(modefied => {
+      this.codes = this.codes.map(code => code._id === modefied._id ? modefied : code);
+    })
+  }
+  
 }

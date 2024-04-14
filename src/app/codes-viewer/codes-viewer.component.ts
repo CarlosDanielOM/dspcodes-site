@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CodesService } from '../codes.service';
 
@@ -15,6 +15,9 @@ export class CodesViewerComponent {
   @Input() lockers: boolean = false;
   @Input() access: boolean = false;
 
+  @Output() modified: any = new EventEmitter();
+  @Output() deleted: any = new EventEmitter();
+
   codeForm = this.fb.group({
     address: ['', Validators.required],
     code: ['', [Validators.required, Validators.minLength(3)]],
@@ -23,7 +26,10 @@ export class CodesViewerComponent {
 
 
   showForm: boolean = false;
+  editMode: boolean = false;
 
+  editId: string = ''
+  
   newCodeData = {};
   
   constructor(
@@ -35,13 +41,25 @@ export class CodesViewerComponent {
   }
   
   onSubmit() {
-    if(this.codeForm.valid && this.lockers) {
+    if(this.codeForm.valid && this.lockers && !this.editMode) {
       this.codesService.createLockerCode(this.codeForm.value).subscribe(locker => this.codes.push(locker));
     }
-    if(this.codeForm.valid && this.access) {
+    if(this.codeForm.valid && this.access && !this.editMode) {
       this.codesService.createAccessCode(this.codeForm.value).subscribe(access => this.codes.push(access));
     }
+
+    if(this.codeForm.valid && this.editMode) {
+      let data = {
+        address: this.codeForm.get('address')!.value,
+        code: this.codeForm.get('code')!.value,
+        submitter: this.codeForm.get('submitter')!.value,
+        _id: this.editId
+      }
+      this.modified.emit(data);
+    }
+
     this.codeForm.reset();
+    this.editMode = false
     this.showForm = false;
   }
   
@@ -61,17 +79,22 @@ export class CodesViewerComponent {
     this.showForm = true;
   }
   
+  startEditCode(code: any) {
+    let data = {
+      address: code.address,
+      code: code.code,
+      submitter: code.submitter
+    }
+    this.codeForm.patchValue(data);
+    this.editId = code._id;
+    this.editMode = true;
+    this.showForm = true;
+  }
+  
   deleteCode(code: any) {
     let action = confirm('Are you sure you want to delete this?');
     if(!action) return;
-    if(this.lockers) {
-      this.codesService.deleteLockerCode(code._id).subscribe();
-    }
-    if(this.access) {
-      this.codesService.deleteAccessCode(code._id).subscribe();
-      
-    }
-    this.codes = this.codes.filter(c => c._id !== code._id);
+    this.deleted.emit(code);
   }
   
 }

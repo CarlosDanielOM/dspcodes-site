@@ -27,5 +27,19 @@ export class LockerCodesComponent {
   getCodes() {
     this.codesService.getLockerCodes().subscribe(codes => this.codes = codes);
   }
-  
+
+  deletedCode(code: any) {
+    this.codesService.deleteLockerCode(code._id).subscribe(deleted => {
+      this.codes = this.codes.filter(code => code._id !== deleted._id);
+    });
+  }
+
+  modefiedCode(code: any) {
+    let id = code._id;
+    delete code._id;
+    this.codesService.updateLockerCode(code, id).subscribe(modefied => {
+      this.codes = this.codes.map(code => code._id === modefied._id ? modefied : code);
+    })
+  }
+
 }

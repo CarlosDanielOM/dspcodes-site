@@ -12,22 +12,22 @@
             <div class="actions"><h3>Actions</h3>
             </div>
         </div>
-        <div class="code" *ngFor="let code of codes">
+        <div class="code" *ngFor="let code of codes, index as i, first as isFirst">
             <div class="address">
                 <span>{{code.address}}</span>
             </div>
             <div class="actual-code">
                 <span>{{code.code}}</span>
                 <div class="actions">
-                    <button>Worked</button>
-                    <button>Failed</button>
+                    <button disabled>Worked</button>
+                    <button disabled>Failed</button>
                 </div>
             </div>
             <div class="submitter">
                 <span>{{code.submitter}}</span>
             </div>
             <div class="actions">
-                <button>Edit</button>
+                <button (click)="startEditCode(code)">Edit</button>
                 <button (click)="deleteCode(code)">Delete</button>
             </div>
         </div>

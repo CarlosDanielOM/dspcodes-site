@@ -60,5 +60,17 @@ export class CodesService {
   deleteAccessCode(id: string) {
     return this.http.delete(`${this.linksService.getApiUrl()}/codes/access/${id}`, {headers: this.headers}).pipe(map((res: any) => res.accessCode));
   }
+
+  updateLockerCode(data: any, id: string) {
+    return this.http.patch(`${this.linksService.getApiUrl()}/codes/lockers/${id}`, data, {headers: this.headers}).pipe(
+      map((res: any) => res.locker)
+    );
+  }
+
+  updateAccessCode(data: any, id: string) {
+    return this.http.patch(`${this.linksService.getApiUrl()}/codes/access/${id}`, data, {headers: this.headers}).pipe(
+      map((res: any) => res.accessCode)
+    );
+  }
   
 }
