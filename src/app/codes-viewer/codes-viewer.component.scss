@@ -1,0 +1,48 @@
+.container {
+    .table{
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        &>div {
+            width: 25%;
+            h3 {
+                text-align: center;
+            }
+        }
+    }
+    .codes{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        .code {
+            width: 100%;
+            height: 50px;
+            // background-color: aqua;
+            display: flex;
+            justify-content: space-around;
+            &>div {
+                width:25%;
+                text-align: center;
+                align-self: center;
+            }
+            .actions {
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+                button {
+                    width: 80px;
+                    height: 30px;
+                }
+            }
+        }
+    }
+}
+
+.form-container{
+    .valid{
+        border: 1px solid green;
+    }
+    .invalid {
+        border: 1px solid red;
+    }
+}
