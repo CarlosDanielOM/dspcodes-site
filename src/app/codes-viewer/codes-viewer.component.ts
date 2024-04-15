@@ -17,6 +17,7 @@ export class CodesViewerComponent {
 
   @Output() modified: any = new EventEmitter();
   @Output() deleted: any = new EventEmitter();
+  @Output() searchValue: any = new EventEmitter();
 
   codeForm = this.fb.group({
     address: ['', Validators.required],
@@ -27,6 +28,8 @@ export class CodesViewerComponent {
 
   showForm: boolean = false;
   editMode: boolean = false;
+
+  searchBox: string = '';
 
   editId: string = ''
   
@@ -95,6 +98,10 @@ export class CodesViewerComponent {
     let action = confirm('Are you sure you want to delete this?');
     if(!action) return;
     this.deleted.emit(code);
+  }
+  
+  search(e: any) {
+    this.searchValue.emit(e.target.value);
   }
   
 }

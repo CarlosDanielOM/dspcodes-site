@@ -14,6 +14,7 @@ import { CodesViewerComponent } from '../codes-viewer/codes-viewer.component';
 export class LockerCodesComponent {
   codes: any[] = [];
 
+  previousSearch: string = ''
   lockerType = true;
   
   constructor(
@@ -42,4 +43,21 @@ export class LockerCodesComponent {
     })
   }
 
+  searchAddress(address: string) {
+    if(address == '') {
+      this.getCodes();
+    }
+    
+    if(this.previousSearch.length > address.length) {
+      this.getCodes();
+    }
+    
+    this.previousSearch = address;
+
+    this.codes = this.codes.filter(code => {
+      return code.address.includes(address);
+    })
+    
+  }
+  
 }

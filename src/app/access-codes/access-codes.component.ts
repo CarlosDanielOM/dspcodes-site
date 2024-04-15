@@ -13,6 +13,7 @@ import { CodesViewerComponent } from '../codes-viewer/codes-viewer.component';
 export class AccessCodesComponent {
   codes: any[] = [];
 
+  previousSearch: string = ""
   accessType = true;
   
   constructor(
@@ -20,6 +21,10 @@ export class AccessCodesComponent {
   ) {}
 
   ngOnInit() {
+    this.getCodes();
+  }
+  
+  getCodes() {
     this.codesService.getAccessCodes().subscribe(codes => {
       this.codes = codes
     });
@@ -37,6 +42,23 @@ export class AccessCodesComponent {
     this.codesService.updateAccessCode(code, id).subscribe(modefied => {
       this.codes = this.codes.map(code => code._id === modefied._id ? modefied : code);
     })
+  }
+
+  searchAddress(address: string) {
+    if(address == '') {
+      this.getCodes();
+    }
+
+    if(this.previousSearch > address) {
+      this.getCodes();
+    }
+
+    this.previousSearch = address;
+
+    this.codes = this.codes.filter(code => {
+      return code.address.includes(address);
+    })
+    
   }
   
 }
