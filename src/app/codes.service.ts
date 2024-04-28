@@ -20,16 +20,22 @@ export class CodesService {
 
   getLockerCodes() {
     return this.http.get(`${this.linksService.getApiUrl()}/codes/lockers`).pipe(map((res: any) => {
-      return res.lockers.sort((a: any, b: any) => {
+      let lockersSorted = res.lockers.sort((a: any, b: any) => {
         return a.address.split(" ")[0] - (b.address.split(" ")[0]);
       })
+      return lockersSorted.sort((a: any, b: any) => {
+        return a.rejects - b.rejects;
+      });
     }));
   }
 
   getAccessCodes() {
     return this.http.get(`${this.linksService.getApiUrl()}/codes/access`).pipe(map((res: any) => {
-      return res.accessCodes.sort((a:any, b:any) => {
+      let addressSorted = res.accessCodes.sort((a:any, b:any) => {
         return a.address.split(" ")[0] - b.address.split(" ")[0];
+      });
+      return addressSorted.sort((a:any, b:any) => {
+        return a.rejects - b.rejects;
       });
     }))
   }

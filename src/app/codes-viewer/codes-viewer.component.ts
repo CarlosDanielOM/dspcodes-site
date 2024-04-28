@@ -14,10 +14,12 @@ export class CodesViewerComponent {
   @Input() codes: any[] = []
   @Input() lockers: boolean = false;
   @Input() access: boolean = false;
+  @Input() combinedAddress: any = new Map();
 
   @Output() modified: any = new EventEmitter();
   @Output() deleted: any = new EventEmitter();
   @Output() searchValue: any = new EventEmitter();
+  @Output() failed: any = new EventEmitter();
 
   codeForm = this.fb.group({
     address: ['', Validators.required],
@@ -81,6 +83,12 @@ export class CodesViewerComponent {
   showFormBtn() {
     this.showForm = true;
   }
+
+  closeForm() {
+    this.showForm = false;
+    this.codeForm.reset();
+    this.editMode = false;
+  }
   
   startEditCode(code: any) {
     let data = {
@@ -102,6 +110,10 @@ export class CodesViewerComponent {
   
   search(e: any) {
     this.searchValue.emit(e.target.value);
+  }
+  
+  codeFail(code: any) {
+    this.failed.emit(code);
   }
   
 }

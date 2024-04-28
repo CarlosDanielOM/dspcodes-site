@@ -6,7 +6,7 @@ import { LockerCodesComponent } from './locker-codes/locker-codes.component';
 import { AccessCodesComponent } from './access-codes/access-codes.component';
 
 export const routes: Routes = [
-    {path: '', redirectTo: "/codes", pathMatch: "full"},
+    {path: '', redirectTo: "/codes/access", pathMatch: "full"},
     {path: 'dashboard', component: DashboardComponent, title: "Dashboard"},
     {path: 'codes', component: CodesComponent, children: [
         {path: '', component: CodesViewComponent},

@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row">
         <div class="actions">
-            <button (click)="showFormBtn()">Add new code</button>
+            <button (click)="showFormBtn()" class="btn btn-primary w-100">Add new code</button>
         </div>
     </div>
     <div class="search-">
@@ -22,37 +22,39 @@
             <div class="actual-code">
                 <span>{{code.code}}</span>
                 <div class="actions">
-                    <button disabled>Worked</button>
-                    <button disabled>Failed</button>
+                    <button class="btn btn-success" disabled>Worked</button>
+                    <button class="btn btn-danger" (click)="codeFail(code)">Failed</button>
                 </div>
             </div>
             <div class="submitter">
                 <span>{{code.submitter}}</span>
             </div>
             <div class="actions">
-                <button (click)="startEditCode(code)">Edit</button>
-                <button (click)="deleteCode(code)">Delete</button>
+                <button class="btn btn-warning" (click)="startEditCode(code)">Edit</button>
+                <button class="btn btn-danger" (click)="deleteCode(code)">Delete</button>
             </div>
         </div>
     </div>
 </div>
 
 <div class="form-container" *ngIf="showForm">
+    <h3 class="title">Add new code</h3>
+    <button class="exit-btn" (click)="closeForm()">X</button>
     <form [formGroup]="codeForm" (submit)="onSubmit()">
         <div class="form-group">
-            <label for="address">Address</label>
-            <input type="text" id="address" name="address" formControlName="address" [className]="address?.valid ? 'valid' : 'invalid'">
+            <label for="address" class="form-label">Address</label>
+            <input type="text" class="form-input" id="address" name="address" formControlName="address" [className]="address?.valid ? 'valid' : 'invalid'">
         </div>
         <div class="form-group">
-            <label for="code">Code</label>
-            <input type="text" id="code" name="code" formControlName="code" [className]="code?.valid ? 'valid' : 'invalid'">
+            <label for="code" class="form-label">Code</label>
+            <input type="text" class="form-input" id="code" name="code" formControlName="code" [className]="code?.valid ? 'valid' : 'invalid'">
         </div>
         <div class="form-group">
-            <label for="submitter">Submitter's First and Last Name</label>
-            <input type="text" id="submitter" name="submitter" formControlName="submitter" [className]="submitter?.valid ? 'valid' : 'invalid'">
+            <label for="submitter" class="form-label">Submitter's First and Last Name</label>
+            <input type="text" class="form-input" id="submitter" name="submitter" formControlName="submitter" [className]="submitter?.valid ? 'valid' : 'invalid'">
         </div>
         <div class="form-group">
-            <button type="submit" [disabled]="codeForm.invalid">Submit</button>
+            <button type="submit" class="btn btn-primary" [disabled]="codeForm.invalid">Submit</button>
         </div>
     </form>
 

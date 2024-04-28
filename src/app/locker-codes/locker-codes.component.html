@@ -1,1 +1,1 @@
-<app-codes-viewer [codes]="codes" [lockers]="lockerType" (deleted)="deletedCode($event)" (modified)="modefiedCode($event)" (searchValue)="searchAddress($event)"></app-codes-viewer>
+<app-codes-viewer [codes]="codes" [lockers]="lockerType" [combinedAddress]="combinedAddress" (deleted)="deletedCode($event)" (modified)="modefiedCode($event)" (searchValue)="searchAddress($event)" (failed)="codeFailed($event)"></app-codes-viewer>
