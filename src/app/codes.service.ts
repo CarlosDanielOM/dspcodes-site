@@ -79,4 +79,16 @@ export class CodesService {
     );
   }
   
+  accessCodeFailed(id: string, fails: number) {
+    return this.http.patch(`${this.linksService.getApiUrl()}/codes/access/${id}`, {rejects: fails}, {headers: this.headers}).pipe(
+      map((res: any) => res.accessCode)
+    );
+  }
+
+  lockerCodeFailed(id: string, fails: number) {
+    return this.http.patch(`${this.linksService.getApiUrl()}/codes/lockers/${id}`, {rejects: fails}, {headers: this.headers}).pipe(
+      map((res: any) => res.locker)
+    );
+  }
+  
 }

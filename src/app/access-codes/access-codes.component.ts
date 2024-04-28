@@ -91,13 +91,14 @@ export class AccessCodesComponent {
       this.combinedAddress.set(code.address, [{code: 'N/A', success: placeholder.success, fails: placeholder.fails + 1, submitter: 'N/A', id: null}]);
     }
     let combinedCodes = [];
-      for (const [address, code] of this.combinedAddress.entries()) {
-        combinedCodes.push({_id: code[0].id, address: address, code: code[0].code, submitter: code[0].submitter, succeeds: code[0].success, failures: code[0].fails});
-      }
-      this.codes = combinedCodes;
-      if(this.searching) {
-        this.searchAddress(this.previousSearch);
-      };
+    for (const [address, code] of this.combinedAddress.entries()) {
+      combinedCodes.push({_id: code[0].id, address: address, code: code[0].code, submitter: code[0].submitter, succeeds: code[0].success, failures: code[0].fails});
+    }
+    this.codes = combinedCodes;
+    if(this.searching) {
+      this.searchAddress(this.previousSearch);
+    };
+    this.codesService.accessCodeFailed(code._id, code.failures + 1).subscribe();
   }
 
   private combinedAddressFun(codes: any) {

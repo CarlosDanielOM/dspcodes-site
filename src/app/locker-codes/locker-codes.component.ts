@@ -90,6 +90,7 @@ export class LockerCodesComponent {
     if(this.searching) {
       this.searchAddress(this.previousSearch);
     };
+    this.codesService.lockerCodeFailed(code._id, code.failures + 1).subscribe();
   }
 
   private combinedAddressFun(codes: any) {
