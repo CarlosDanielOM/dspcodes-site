@@ -26,6 +26,11 @@
                 text-align: center;
                 align-self: center;
             }
+            .address {
+                cursor: pointer;
+                color: blue;
+                text-decoration: underline;
+            }
             .actions {
                 display: flex;
                 justify-content: space-around;

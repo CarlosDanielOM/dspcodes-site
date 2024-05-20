@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { LinksService } from './links.service';
 import { HttpClient } from '@angular/common/http';
 import { map, pipe } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,8 @@ export class CodesService {
   
   constructor(
     private linksService: LinksService,
-    private http: HttpClient
+    private http: HttpClient,
+    private snackBar: MatSnackBar
   ) { }
 
   getLockerCodes() {
@@ -40,54 +42,78 @@ export class CodesService {
     }))
   }
 
-  getLockerCode(id: number) {
-    return this.http.get(`${this.linksService.getApiUrl()}/codes/lockers/${id}`).pipe(map((res: any) => res.locker))
+  getAccessCodesForAddress(address: string) {
+    return this.http.get(`${this.linksService.getApiUrl()}/codes/access/${address}`).pipe(map((res: any) => res.accessCodes));
   }
 
-  getAccessCode(id: number) {
-    return this.http.get(`${this.linksService.getApiUrl()}/codes/access/${id}`).pipe(map((res: any) => res.locker))
+  getLockerCodesForAddress(address: string) {
+    return this.http.get(`${this.linksService.getApiUrl()}/codes/lockers/${address}`).pipe(map((res: any) => res.lockerCodes));
   }
 
   createLockerCode(data: any) {
     return this.http.post(`${this.linksService.getApiUrl()}/codes/lockers`, data, { headers: {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer DSPAUTHTOKEN'
-    }}).pipe(map((res: any) => res.locker));
+    }}).pipe(map((res: any) => {
+      this.snackBar.open('Locker Code Created', 'OK', {duration: 3000})
+      return res.locker
+    }));
   }
 
   createAccessCode(data: any) {
-    return this.http.post(`${this.linksService.getApiUrl()}/codes/access`, data, {headers: this.headers}).pipe(map((res: any) => res.accessCode));
+    return this.http.post(`${this.linksService.getApiUrl()}/codes/access`, data, {headers: this.headers}).pipe(map((res: any) => {
+      this.snackBar.open('Access Code Created', 'OK', {duration: 3000})
+      return res.accessCode
+    }));
   }
   
   deleteLockerCode(id: string) {
-    return this.http.delete(`${this.linksService.getApiUrl()}/codes/lockers/${id}`, {headers: this.headers}).pipe(map((res: any) => res.locker));
+    return this.http.delete(`${this.linksService.getApiUrl()}/codes/lockers/${id}`, {headers: this.headers}).pipe(map((res: any) => {
+      this.snackBar.open('Locker Code Deleted', 'OK', {duration: 3000})
+      return res.locker
+    }));
   }
 
   deleteAccessCode(id: string) {
-    return this.http.delete(`${this.linksService.getApiUrl()}/codes/access/${id}`, {headers: this.headers}).pipe(map((res: any) => res.accessCode));
+    return this.http.delete(`${this.linksService.getApiUrl()}/codes/access/${id}`, {headers: this.headers}).pipe(map((res: any) => {
+      this.snackBar.open('Access Code Deleted', 'OK', {duration: 3000})
+      return res.accessCode
+    }));
   }
 
   updateLockerCode(data: any, id: string) {
     return this.http.patch(`${this.linksService.getApiUrl()}/codes/lockers/${id}`, data, {headers: this.headers}).pipe(
-      map((res: any) => res.locker)
+      map((res: any) => {
+        this.snackBar.open('Locker Code Updated', 'OK', {duration: 3000})
+        return res.locker
+      })
     );
   }
 
   updateAccessCode(data: any, id: string) {
     return this.http.patch(`${this.linksService.getApiUrl()}/codes/access/${id}`, data, {headers: this.headers}).pipe(
-      map((res: any) => res.accessCode)
+      map((res: any) => {
+        this.snackBar.open('Access Code Updated', 'OK', {duration: 3000})
+        return res.accessCode
+      })
     );
   }
   
   accessCodeFailed(id: string, fails: number) {
     return this.http.patch(`${this.linksService.getApiUrl()}/codes/access/${id}`, {rejects: fails}, {headers: this.headers}).pipe(
-      map((res: any) => res.accessCode)
+      map((res: any) => {
+        this.snackBar.open('Access Code Failed', 'OK', {duration: 3000})
+        return res.accessCode
+      })
     );
   }
 
   lockerCodeFailed(id: string, fails: number) {
     return this.http.patch(`${this.linksService.getApiUrl()}/codes/lockers/${id}`, {rejects: fails}, {headers: this.headers}).pipe(
-      map((res: any) => res.locker)
+      map((res: any) => {
+        this.snackBar.open('Locker Code Failed', 'OK', {duration: 3000})
+        return res.locker
+      })
     );
   }
   

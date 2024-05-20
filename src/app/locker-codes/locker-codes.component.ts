@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CodesService } from '../codes.service';
-import { NgFor } from '@angular/common';
+import { Location, NgFor } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { CodesViewerComponent } from '../codes-viewer/codes-viewer.component';
 
@@ -22,8 +22,16 @@ export class LockerCodesComponent {
   emptyOnce: boolean = false;
   
   constructor(
-    private codesService: CodesService
-  ) {}
+    private codesService: CodesService,
+    private location: Location
+  ) {
+    this.location.onUrlChange(url => {
+      let queryAddress = url.split('/');
+      if(queryAddress[3]) {
+        this.getCodesForAddress(queryAddress[3]);
+      }
+    });
+  }
 
   ngOnInit() {
     this.getCodes();
@@ -37,6 +45,12 @@ export class LockerCodesComponent {
     this.codesService.getLockerCodes().subscribe(codes => {
       this.combinedAddressFun(codes);
     });
+  }
+
+  getCodesForAddress(address: string) {
+    this.codesService.getLockerCodesForAddress(address).subscribe(codes => {
+      this.individualAddressCodes(codes);
+    })
   }
 
   deletedCode(code: any) {
@@ -105,6 +119,14 @@ export class LockerCodesComponent {
     });
     this.getCombinedCodes();
   }
+
+  private individualAddressCodes(codes: any) {
+    let addressCodes: any[] = [];
+    codes.forEach((code: any) => {
+      addressCodes.push({address: code.address, code: code.code, submitter: code.submitter, succeeds: code.succeeds, failures: code.rejects, _id: code._id});
+    });
+    this.codes = addressCodes;
+  } 
   
   getCombinedCodes() {
     let combinedCodes = [];

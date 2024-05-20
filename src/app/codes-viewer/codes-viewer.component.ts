@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CodesService } from '../codes.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-codes-viewer',
@@ -39,7 +40,8 @@ export class CodesViewerComponent {
   
   constructor(
     private fb: FormBuilder,
-    private codesService: CodesService
+    private codesService: CodesService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -114,6 +116,26 @@ export class CodesViewerComponent {
   
   codeFail(code: any) {
     this.failed.emit(code);
+  }
+
+  resetSearch() {
+    this.searchBox = '';
+    this.searchValue.emit('');
+    if(this.access) {
+      this.router.navigate(['/codes/access']);
+    }
+    if(this.lockers) {
+      this.router.navigate(['/codes/lockers']);
+    }
+  }
+  
+  showAddressCodes(code: any) {
+    if(this.access) {
+      this.router.navigate(['/codes/access', code.address]);
+    }
+    if(this.lockers) {
+      this.router.navigate(['/codes/lockers', code.address]);
+    }
   }
   
 }

@@ -6,6 +6,7 @@
     </div>
     <div class="search-">
         <input type="text" (input)="search($event)" placeholder="Search Address">
+        <button (click)="resetSearch()">Reset</button>
     </div>
     <div class="codes">
         <div class="table">
@@ -16,7 +17,7 @@
             </div>
         </div>
         <div class="code" *ngFor="let code of codes, index as i, first as isFirst">
-            <div class="address">
+            <div class="address" (click)="showAddressCodes(code)">
                 <span>{{code.address}}</span>
             </div>
             <div class="actual-code">

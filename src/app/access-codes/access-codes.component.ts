@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { CodesService } from '../codes.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { CodesViewerComponent } from '../codes-viewer/codes-viewer.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-access-codes',
@@ -21,8 +22,20 @@ export class AccessCodesComponent {
   emptyOnce: boolean = false;
   
   constructor(
-    private codesService: CodesService
-  ) {}
+    private codesService: CodesService,
+    private router: Router,
+    private location: Location
+  ) {
+    location.onUrlChange((url) => {
+      let params = url.split('/')
+      if(params[3]) {
+        let findAddress = params[3];
+        let queryAddress = findAddress;
+        findAddress = findAddress.split('%20').join(' ');
+        this.getCodesForAddress(queryAddress);
+      }
+    });
+  }
 
   ngOnInit() {
     this.getCodes();
@@ -40,6 +53,12 @@ export class AccessCodesComponent {
     this.codesService.getAccessCodes().subscribe(codes => {
       this.combinedAddressFun(codes);
     });
+  }
+
+  getCodesForAddress(address: string) {
+    this.codesService.getAccessCodesForAddress(address).subscribe(codes => {
+      this.indivitualAddressCodes(codes);
+    })
   }
   
   deletedCode(code: any) {
@@ -116,6 +135,17 @@ export class AccessCodesComponent {
       combinedCodes.push({_id: code[0].id, address: address, code: code[0].code, submitter: code[0].submitter, succeeds: code[0].success, failures: code[0].fails});
     }
     this.codes = combinedCodes;
+  }
+
+  private indivitualAddressCodes(codes: any) {
+    let addressCodes: any[] = []
+    codes.forEach((code: any) => {
+      addressCodes.push({address: code.address, code: code.code, submitter: code.submitter, succeeds: code.succeeds, failures: code.rejects, _id: code._id});
+    });
+
+    this.codes = addressCodes;
+
+
   }
   
 }
