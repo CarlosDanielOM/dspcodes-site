@@ -4,10 +4,15 @@ import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angu
 import { CodesService } from '../codes.service';
 import { Router } from '@angular/router';
 
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+
 @Component({
   selector: 'app-codes-viewer',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, MatFormField, MatInput, MatLabel, MatButtonModule, MatCardModule],
   templateUrl: './codes-viewer.component.html',
   styleUrl: './codes-viewer.component.scss'
 })
@@ -29,7 +34,7 @@ export class CodesViewerComponent {
   });
 
 
-  showForm: boolean = false;
+  showForm: boolean = true;
   editMode: boolean = false;
 
   searchBox: string = '';
