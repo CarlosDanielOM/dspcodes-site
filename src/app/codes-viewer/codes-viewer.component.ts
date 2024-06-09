@@ -34,7 +34,7 @@ export class CodesViewerComponent {
   });
 
 
-  showForm: boolean = true;
+  showForm: boolean = false;
   editMode: boolean = false;
 
   searchBox: string = '';
