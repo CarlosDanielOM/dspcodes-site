@@ -95,7 +95,7 @@ export class AccessCodesComponent {
     this.searching = true;
 
     this.codes = this.codes.filter(code => {
-      return code.address.includes(address);
+      return code.address.toLowerCase().includes(address.toLowerCase());
     })
     
   }
