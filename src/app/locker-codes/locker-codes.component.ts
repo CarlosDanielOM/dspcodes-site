@@ -86,7 +86,7 @@ export class LockerCodesComponent {
     this.searching = true;
 
     this.codes = this.codes.filter(code => {
-      return code.address.includes(address);
+      return code.address.toLowerCase().includes(address.toLowerCase());
     })
     
   }
